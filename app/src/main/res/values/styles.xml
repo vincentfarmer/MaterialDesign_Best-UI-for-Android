@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--将AppTheme的parent属性设置成NoActionBar将ActionBar隐藏起来，默认的是DarkActionBar，深色主题-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--ActionBar或者ToolBar的颜色-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!--顶端通知栏颜色-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--悬浮按钮颜色以及一些空间的选中颜色-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--屏幕显示区背景颜色-->
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <!--ActionBar或者ToolBar的颜text文本颜色-->
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <!--底部虚拟三键颜色-->
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+    </style>
+
+</resources>

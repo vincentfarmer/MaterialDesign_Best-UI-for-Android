@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--嵌套Group标签，并将checkableBehavior属性设置为single，表示Group中的所有项目只能单选-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_phone"
+            android:icon="@drawable/ic_nav_phone"
+            android:title="Phone"
+            />
+        <item
+            android:id="@+id/friends"
+            android:icon="@drawable/ic_nav_friends"
+            android:title="Friends"
+            />
+        <item
+            android:id="@+id/location"
+            android:icon="@drawable/ic_nav_location"
+            android:title="Location"
+            />
+        <item
+            android:id="@+id/mail"
+            android:icon="@drawable/ic_nav_mail"
+            android:title="Mail"
+            />
+    </group>
+</menu>
