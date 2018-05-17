@@ -1,4 +1,4 @@
-package com.example.zacharywu.materialdesign;
+package com.example.zacharywu.materialdesign.activitys;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.Toast;
+
+import com.example.zacharywu.materialdesign.classes.Parkinglot;
+import com.example.zacharywu.materialdesign.adapters.ParkinglotAdapter;
+import com.example.zacharywu.materialdesign.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +31,20 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
 
     //初始化停车场对象数组
-    private ParkingLot[] parkingLots = {
-            new ParkingLot("停车场1", R.drawable.parkinglot_1),
-            new ParkingLot("停车场2", R.drawable.parkinglot_2),
-            new ParkingLot("停车场3", R.drawable.parkinglot_3),
-            new ParkingLot("停车场4", R.drawable.parkinglot_4),
-            new ParkingLot("停车场5", R.drawable.parkinglot_5),
-            new ParkingLot("停车场6", R.drawable.parkinglot_6),
-            new ParkingLot("停车场7", R.drawable.parkinglot_7),
-            new ParkingLot("停车场9", R.drawable.parkinglot_8),
+    private Parkinglot[] parkinglots = {
+            new Parkinglot("停车场1", R.drawable.parkinglot_1),
+            new Parkinglot("停车场2", R.drawable.parkinglot_2),
+            new Parkinglot("停车场3", R.drawable.parkinglot_3),
+            new Parkinglot("停车场4", R.drawable.parkinglot_4),
+            new Parkinglot("停车场5", R.drawable.parkinglot_5),
+            new Parkinglot("停车场6", R.drawable.parkinglot_6),
+            new Parkinglot("停车场7", R.drawable.parkinglot_7),
+            new Parkinglot("停车场9", R.drawable.parkinglot_8),
     };
 
-    private List<ParkingLot> parkingLotList = new ArrayList<>();
+    private List<Parkinglot> parkinglotList = new ArrayList<>();
 
-    private ParkingLotAdapter adapter;
+    private ParkinglotAdapter adapter;
 
     //声明下拉刷新布局类
     private SwipeRefreshLayout swipeRefresh;
@@ -96,8 +99,11 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ParkingLotAdapter(parkingLotList);
+        adapter = new ParkinglotAdapter(parkinglotList);
         recyclerView.setAdapter(adapter);
+
+        //初始化SwipeRefreshLayout，其中包含SwipeRefreshLayout的刷新事件
+        initSwipeRefreshLayout();
     }
 
     /**
@@ -138,11 +144,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
     public void initParkingLots(){
-        parkingLotList.clear();
+        parkinglotList.clear();
         for(int i = 0; i < 50; i++){
             Random random = new Random();
-            int index = random.nextInt(parkingLots.length);
-            parkingLotList.add(parkingLots[index]);
+            int index = random.nextInt(parkinglots.length);
+            parkinglotList.add(parkinglots[index]);
         }
     }
 
@@ -150,6 +156,45 @@ public class MainActivity extends AppCompatActivity {
      * 初始化SwipeRefreshLayout，其中recyclerView是它的子控件，SwipeRefreshLayout的功能是为它的子控件添加下拉刷新的功能
      */
     public void initSwipeRefreshLayout(){
+        //拿到实例
         swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
+        //设置下拉刷新进度条的颜色
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        //下拉事件发生时触发
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshParkinglot();
+            }
+        });
+    }
+
+    /**
+     * 下拉事件发生时触发，通常情况下这里onRefresh方法应该是请求网络数据，但这里简单的使用本地数据刷新
+     */
+    public void refreshParkinglot(){
+        //开启一个线程并且沉睡两秒钟，因为本地刷新速度太快看不到效果
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                  Thread.sleep(2000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                //切换到主线程
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //使用initParkingLots()重新生成数据
+                        initParkingLots();
+                        //notifyDataSetChanged()方法告诉adpter数据发生了变化
+                        adapter.notifyDataSetChanged();
+                        //表示刷新事件结束，并隐藏刷新进度条
+                        swipeRefresh.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
     }
 }

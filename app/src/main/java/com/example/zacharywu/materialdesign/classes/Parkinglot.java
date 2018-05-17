@@ -1,11 +1,11 @@
-package com.example.zacharywu.materialdesign;
+package com.example.zacharywu.materialdesign.classes;
 
-public class ParkingLot {
+public class Parkinglot {
 
     private String name;
     private int imageID;
 
-    public ParkingLot(String name, int imageID){
+    public Parkinglot(String name, int imageID){
         this.name = name;
         this.imageID = imageID;
     }
